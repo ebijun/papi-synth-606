@@ -1,0 +1,76 @@
+--- a/src/synchub_bridge.h
++++ b/src/synchub_bridge.h
+@@ -0,0 +1,54 @@
++#ifndef SYNCHUB_BRIDGE_H
++#define SYNCHUB_BRIDGE_H
++
++#include <fcntl.h>
++#include <unistd.h>
++#include <termios.h>
++#include <stdint.h>
++
++class SyncHubBridge {
++private:
++    int fd;
++public:
++    SyncHubBridge() : fd(-1) {
++        fd = open("/dev/ttyU0", O_WRONLY | O_NOCTTY | O_NONBLOCK);
++        if (fd >= 0) {
++            struct termios tty;
++            if (tcgetattr(fd, &tty) == 0) {
++                cfmakeraw(&tty);
++                cfsetospeed(&tty, B115200);
++                tcsetattr(fd, TCSANOW, &tty);
++            }
++        }
++    }
++    ~SyncHubBridge() {
++        if (fd >= 0) {
++            sendPsg(7, 0x3F);
++            sendPsg(8, 0);
++            sendPsg(9, 0);
++            sendPsg(10, 0);
++            sendSync(0);
++            close(fd);
++        }
++    }
++    void sendPsg(uint8_t reg, uint8_t val) {
++        if (fd >= 0) {
++            uint8_t pkt[3] = { 0xAA, (uint8_t)(reg & 0x0F), val };
++            write(fd, pkt, 3);
++        }
++    }
++    void sendSync(uint8_t run) {
++        if (fd >= 0) {
++            uint8_t pkt[2] = { 0xBB, run };
++            write(fd, pkt, 2);
++        }
++    }
++};
++
++#endif
+--- a/src/psg.cpp
++++ b/src/psg.cpp
+@@ -1,5 +1,7 @@
+ #include "psg.h"
++#include "synchub_bridge.h"
++static SyncHubBridge g_syncHub;
+ 
+ void PSG60::OutA0(BYTE data) {
+     RegisterLatch = data & 0x0F;
+@@ -7,6 +9,7 @@ void PSG60::OutA0(BYTE data) {
+ 
+ void PSG60::OutA1(BYTE data) {
+     WriteReg(RegisterLatch, data);
++    g_syncHub.sendPsg(RegisterLatch, data);
+ }
+--- a/src/io.cpp
++++ b/src/io.cpp
+@@ -1,4 +1,6 @@
+ #include "io.h"
++#include "synchub_bridge.h"
++extern SyncHubBridge g_syncHub;
+ 
+ void IO60::Out(BYTE port, BYTE data) {
++    if (port == 0x90) { g_syncHub.sendSync(data); return; }
+     // existing port dispatch...

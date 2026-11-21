@@ -1,0 +1,25 @@
+# ~/.midishrc for PAPI-SYNTH 606
+dnew 0 "/dev/rmidi0" wo
+dclktx {0}
+
+proc go {
+    p
+}
+
+proc halt {
+    s
+}
+
+proc mode_p6 {
+    fdel kbd_thru
+}
+
+proc mode_kbd {
+    fnew kbd_thru
+    fmap {any {1 0}} {any {0 0}}
+}
+
+proc mode_session {
+    fnew kbd_thru
+    fmap {any {1 2}} {any {0 2}}
+}

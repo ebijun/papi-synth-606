@@ -1,0 +1,42 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Build & Temporary files
+build/
+dist/
+*.o
+*.obj
+*.elf
+*.uf2
+*.hex
+*.bin
+*.tmp
+*.bak
+*.swp
+temp/
+
+# Arduino / PlatformIO
+.pio/
+.vscode/
+*.ino.cpp
+
+# KiCad / PCB temporary & backup files
+*-backups/
+*.lck
+*.bck
+*.dcm
+fp-info-cache
+
+# NetBSD / C++ build artifacts
+*.core
+*.so
+*.a
+Makefile.Debug
+Makefile.Release
