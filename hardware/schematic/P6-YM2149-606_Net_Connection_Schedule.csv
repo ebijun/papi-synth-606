@@ -1,0 +1,20 @@
+﻿Pico signal,Buffer,YM2149 / connector,Notes
+Pico GP2,U2 A1 pin2,YM DA0 pin37,Data bit 0
+Pico GP3,U2 A2 pin4,YM DA1 pin36,Data bit 1
+Pico GP4,U2 A3 pin6,YM DA2 pin35,Data bit 2
+Pico GP5,U2 A4 pin8,YM DA3 pin34,Data bit 3
+Pico GP6,U2 A5 pin11,YM DA4 pin33,Data bit 4
+Pico GP7,U2 A6 pin13,YM DA5 pin32,Data bit 5
+Pico GP8,U2 A7 pin15,YM DA6 pin31,Data bit 6
+Pico GP9,U2 A8 pin17,YM DA7 pin30,Data bit 7
+Pico GP10,U3 1A pin2 -> 1Y pin3,YM BC1 pin29,Control
+Pico GP11,U3 2A pin5 -> 2Y pin6,YM BDIR pin27,Control
+Pico GP12,U3 4A pin12 -> 4Y pin11,YM CLOCK pin22,2MHz clock
+Pico GP13,U3 3A pin9 -> 3Y pin8,YM /RESET pin23,Active-low reset
+Pico GP14,U4 1A pin2 -> 1Y pin3,J1 DIN pin1 via R1,RUN/STOP
+Pico GP15,U4 2A pin5 -> 2Y pin6,J1 DIN pin3 via R2,24 PPQN clock
++5V_USB (Pico VBUS pin40),Power rail,"YM pin40, U2 pin20, U3/U4 pin14",USB-derived +5V
+GND (Pico GND),Common ground,"YM pin1, U2 pin10, U3/U4 pin7, DIN pin2, J2 sleeve",Star/plane ground
++5V,Strap,"YM BC2 pin28, A8 pin25",Fixed high
+GND,Strap,YM A9 pin24,Fixed low
+Open,Internal pull-up,YM SEL pin26,Select direct external clock
